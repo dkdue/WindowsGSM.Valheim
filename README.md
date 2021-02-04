@@ -7,7 +7,9 @@ https://store.steampowered.com/app/892970/Valheim/
 # Requirements
 WindowsGSM >= 1.21.0
 
-Edit the file start_headless_server.bat, it will be in charge of running the server.
+Edit the file start_headless_server.bat without "", it will be in charge of running the server.
+
+start valheim_server -nographics -batchmode -name "CHANGEME" -port 2456 -world "CHANGEME" -password "CHANGEME" -public 1
 
 For now the server works with a password, you have to put 5 numbers or 5 letters minimum, it is mandatory !!!
 
