@@ -18,7 +18,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.Valheim", // WindowsGSM.XXXX
             author = "kessef",
             description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
-            version = "1.0",
+            version = "1.1",
             url = "https://github.com/dkdue/WindowsGSM.Valheim", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
@@ -34,7 +34,7 @@ namespace WindowsGSM.Plugins
 
 
         // - Game server Fixed variables
-        public override string StartPath => @"valheim_server.exe"; // Game server start path
+        public override string StartPath => @"start_headless_server.bat"; // Game server start path
         public string FullName = "Valheim Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
         public int PortIncrements = 1; // This tells WindowsGSM how many ports should skip after installation
@@ -45,8 +45,8 @@ namespace WindowsGSM.Plugins
         public string Port = "2456"; // Default port
         public string QueryPort = "2458"; // Default query port
         public string Defaultmap = "Dedicated"; // Default map name
-        public string Maxplayers = "32"; // Default maxplayers
-        public string Additional = "-name CHANGEME -port 2456 -world CHANGEME -password 5NUMBERS"; // Additional server start parameter
+        public string Maxplayers = "10"; // Default maxplayers
+        public string Additional = ""; // Additional server start parameter
 
 
         // - Create a default cfg for the game server after installation
@@ -90,7 +90,7 @@ namespace WindowsGSM.Plugins
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?Port={_serverData.ServerPort}";
 			param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
-            param += $"?{_serverData.ServerParam} -nographics -batchmode -public 1 -nosteamclient -game -server -log";
+            param += $"?{_serverData.ServerParam} -nosteamclient -game -server -log";
 
             // Prepare Process
             var p = new Process
@@ -147,8 +147,23 @@ namespace WindowsGSM.Plugins
         }
 
 
-        // - Stop server function
-        public async Task Stop(Process p) => await Task.Run(() => { p.Kill(); });
+		// - Stop server function
+		public async Task Stop(Process p)
+		{
+			await Task.Run(() =>
+			{
+				if (p.StartInfo.RedirectStandardInput)
+				{
+					// Send "quit" command to StandardInput stream if EmbedConsole is on
+					p.StandardInput.WriteLine("quit");
+				}
+				else
+				{
+					// Send "quit" command to game server process MainWindow
+					ServerConsole.SendMessageToMainWindow(p.MainWindowHandle, "quit");
+				}
+			});
+		}
 
         // Get ini files
         public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath)
