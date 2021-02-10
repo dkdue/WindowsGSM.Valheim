@@ -18,7 +18,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.Valheim", // WindowsGSM.XXXX
             author = "kessef",
             description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
-            version = "1.1",
+            version = "1.2",
             url = "https://github.com/dkdue/WindowsGSM.Valheim", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
@@ -45,7 +45,7 @@ namespace WindowsGSM.Plugins
         public string Port = "2456"; // Default port
         public string QueryPort = "2458"; // Default query port
         public string Defaultmap = "Dedicated"; // Default map name
-        public string Maxplayers = "10"; // Default maxplayers
+        public string Maxplayers = "32"; // Default maxplayers
         public string Additional = ""; // Additional server start parameter
 
 
@@ -148,22 +148,21 @@ namespace WindowsGSM.Plugins
 
 
 		// - Stop server function
-		public async Task Stop(Process p)
-		{
-			await Task.Run(() =>
-			{
-				if (p.StartInfo.RedirectStandardInput)
-				{
-					// Send "quit" command to StandardInput stream if EmbedConsole is on
-					p.StandardInput.WriteLine("quit");
-				}
-				else
-				{
-					// Send "quit" command to game server process MainWindow
-					ServerConsole.SendMessageToMainWindow(p.MainWindowHandle, "quit");
-				}
-			});
-		}
+        public async Task Stop(Process p)
+        {
+            await Task.Run(() =>
+            {
+                if (p.StartInfo.CreateNoWindow)
+                {
+                    p.CloseMainWindow();
+                }
+                else
+                {
+                    Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
+                    Functions.ServerConsole.SendWaitToMainWindow("^c");
+                }
+            });
+        }
 
         // Get ini files
         public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath)
