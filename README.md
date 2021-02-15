@@ -11,7 +11,7 @@ WindowsGSM >= 1.21.0
 The administrator files are located in the host folder C: \ Users \ YORNAME \ AppData \ LocalLow \ IronGate \ Valheim \
 
 # Config
-Edit in Edit Config, see the <a href="https://discord.com/channels/530818985713860649/800673503966789682/810663352782159952">Image</a> for details
+Edit in Edit Config, see the <a href="https://cdn.discordapp.com/attachments/800673503966789682/810663350102261760/unknown.png">Image</a> for details
 
 start valheim_server -nographics -batchmode -name "CHANGEME" -port 2456 -world "CHANGEME" -password "CHANGEME" -public 1
 
