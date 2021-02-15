@@ -18,7 +18,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.Valheim", // WindowsGSM.XXXX
             author = "kessef",
             description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
-            version = "1.3",
+            version = "1.4",
             url = "https://github.com/dkdue/WindowsGSM.Valheim", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
@@ -43,7 +43,7 @@ namespace WindowsGSM.Plugins
 
         // - Game server default values
         public string Port = "2456"; // Default port
-        public string QueryPort = "2458"; // Default query port
+        public string QueryPort = "2457"; // Default query port
         public string Defaultmap = "Dedicated"; // Default map name
         public string Maxplayers = "10"; // Default maxplayers
         public string Additional = "-name Server_Name -port 2456 -world WorldName -password Secret"; // Additional server start parameter
