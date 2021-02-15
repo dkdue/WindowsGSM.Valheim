@@ -70,7 +70,7 @@ namespace WindowsGSM.Plugins
 
             // Prepare start parameter
 
-			string param = $"-batchmode -nographics -public 1 {_serverData.ServerParam}" + (!AllowsEmbedConsole ? " -log" : string.Empty);	
+			string param = $"-batchmode -nographics {_serverData.ServerParam}" + (!AllowsEmbedConsole ? " -log" : string.Empty);	
 	
 
 
