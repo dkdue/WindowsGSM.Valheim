@@ -8,12 +8,12 @@ https://store.steampowered.com/app/892970/Valheim/
 WindowsGSM >= 1.21.0
 
 # Server Files
-The administrator files are located in the host folder C: \ Users \ YORNAME \ AppData \ LocalLow \ IronGate \ Valheim \
+The administrator files are located in the host folder C:\Users\YORNAME\AppData\LocalLow\IronGate\Valheim\
 
 # Config
 Edit in Edit Config, see the <a href="https://cdn.discordapp.com/attachments/800673503966789682/810663350102261760/unknown.png">Image</a> for details
 
-start valheim_server -nographics -batchmode -name "CHANGEME" -port 2456 -world "CHANGEME" -password "CHANGEME" -public 1
+-name "CHANGEME" -port 2456 -world "CHANGEME" -password "CHANGEME"
 
 # Important
 For now the server works with a password, you have to put 5 numbers or 5 letters minimum, it is mandatory !!!
