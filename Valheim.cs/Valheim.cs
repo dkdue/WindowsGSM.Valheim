@@ -18,7 +18,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.Valheim", // WindowsGSM.XXXX
             author = "kessef",
             description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
-            version = "1.2",
+            version = "1.3",
             url = "https://github.com/dkdue/WindowsGSM.Valheim", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
@@ -34,10 +34,10 @@ namespace WindowsGSM.Plugins
 
 
         // - Game server Fixed variables
-        public override string StartPath => @"start_headless_server.bat"; // Game server start path
+        public override string StartPath => @"valheim_server.exe"; // Game server start path
         public string FullName = "Valheim Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
-        public int PortIncrements = 1; // This tells WindowsGSM how many ports should skip after installation
+        public int PortIncrements = 10; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
 
 
@@ -45,52 +45,34 @@ namespace WindowsGSM.Plugins
         public string Port = "2456"; // Default port
         public string QueryPort = "2458"; // Default query port
         public string Defaultmap = "Dedicated"; // Default map name
-        public string Maxplayers = "32"; // Default maxplayers
-        public string Additional = ""; // Additional server start parameter
+        public string Maxplayers = "10"; // Default maxplayers
+        public string Additional = "-name Server_Name -port 2456 -world WorldName -password Secret"; // Additional server start parameter
 
 
         // - Create a default cfg for the game server after installation
         public async void CreateServerCFG()
         {
-            string configPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"");
-            Directory.CreateDirectory(Path.GetDirectoryName(configPath));
-
-            string name = String.Concat(FullName.Where(c => !Char.IsWhiteSpace(c)));
-
-            //Download Game.ini
-            if (await DownloadGameServerConfig(configPath, configPath))
-            {
-                string configText = File.ReadAllText(configPath);
-                configText = configText.Replace("{{session_name}}", _serverData.ServerName);
-                configText = configText.Replace("{{rcon_port}}", _serverData.ServerQueryPort);
-                configText = configText.Replace("{{max_players}}", _serverData.ServerMaxPlayer);
-                File.WriteAllText(configPath, configText);
-            }
+            //No config file seems
         }
 
         // - Start server function, return its Process to WindowsGSM
         public async Task<Process> Start()
         {
-            // Check for files in Win64
-            string win64 = Path.Combine(ServerPath.GetServersServerFiles(_serverData.ServerID, @""));
-            string[] neededFiles = { "steamclient64.dll", "tier0_s64.dll", "vstdlib_s64.dll" };
-
-            foreach (string file in neededFiles)
-            {
-                if (!File.Exists(Path.Combine(win64, file)))
-                {
-                    File.Copy(Path.Combine(ServerPath.GetServersServerFiles(_serverData.ServerID), file), Path.Combine(win64, file));
-                }
-            }
-
+			
             string shipExePath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, StartPath);
+            if (!File.Exists(shipExePath))
+            {
+                Error = $"{Path.GetFileName(shipExePath)} not found ({shipExePath})";
+                return null;
+            }			
+			
+		
 
             // Prepare start parameter
-            string param = string.IsNullOrWhiteSpace(_serverData.ServerMap) ? string.Empty : $"{_serverData.ServerMap}?listen";
-            param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
-            param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?Port={_serverData.ServerPort}";
-			param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
-            param += $"?{_serverData.ServerParam} -nosteamclient -game -server -log";
+
+			string param = $"-batchmode -nographics -public 1 {_serverData.ServerParam}" + (!AllowsEmbedConsole ? " -log" : string.Empty);	
+	
+
 
             // Prepare Process
             var p = new Process
@@ -155,6 +137,7 @@ namespace WindowsGSM.Plugins
                 if (p.StartInfo.CreateNoWindow)
                 {
                     p.CloseMainWindow();
+					
                 }
                 else
                 {
@@ -164,29 +147,6 @@ namespace WindowsGSM.Plugins
             });
         }
 
-        // Get ini files
-        public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    await webClient.DownloadFileTaskAsync($"", filePath);
-                }
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine($"Github.DownloadGameServerConfig {e}");
-            }
-
-            return File.Exists(filePath);
-        }
     }
 }
