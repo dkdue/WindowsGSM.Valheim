@@ -18,7 +18,6 @@ Edit in Edit Config, see the <a href="https://cdn.discordapp.com/attachments/800
 # Important
 For now the server works with a password, you have to put 5 numbers or 5 letters minimum, it is mandatory !!!
 
-The number of connected players does not work, I deduce that it is possibly due to having to put the server with a password
 
 # Installation
   1. Download the latest release
