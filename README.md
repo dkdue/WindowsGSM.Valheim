@@ -14,8 +14,11 @@ The administrator files are located in the host folder C:\Users\YORNAME\AppData\
 Edit in Edit Config, see the <a href="https://cdn.discordapp.com/attachments/800673503966789682/810663350102261760/unknown.png">Image</a> for details
 
 -name "CHANGEME" -port 2456 -world "CHANGEME" -password "CHANGEME" -savedir "c:\directory where you want to save" -Public 1
-*-savedir You can create a folder inside the directory of your valheim server and you can make backups*
+
+*-savedir You can create a folder inside the directory of your valheim server and you can make backups
+
 *-Public 1 only for Dedicated Servers
+
 *-Public 0 only for Lans
 
 # Important
