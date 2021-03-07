@@ -138,7 +138,8 @@ namespace WindowsGSM.Plugins
             {
                 if (p.StartInfo.CreateNoWindow)
                 {
-                    p.CloseMainWindow();
+                    Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
+                    Functions.ServerConsole.SendWaitToMainWindow("^c");
 					
                 }
                 else
