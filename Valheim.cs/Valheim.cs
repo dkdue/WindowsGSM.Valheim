@@ -20,7 +20,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.Valheim", // WindowsGSM.XXXX
             author = "kessef",
             description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
-            version = "1.4",
+            version = "1.5",
             url = "https://github.com/dkdue/WindowsGSM.Valheim", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
