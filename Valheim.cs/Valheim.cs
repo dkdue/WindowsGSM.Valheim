@@ -20,7 +20,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.Valheim", // WindowsGSM.XXXX
             author = "kessef",
             description = "WindowsGSM plugin for supporting Valheim Dedicated Server",
-            version = "1.5",
+            version = "1.6",
             url = "https://github.com/dkdue/WindowsGSM.Valheim", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
@@ -131,22 +131,13 @@ namespace WindowsGSM.Plugins
         }
 
 
-		// - Stop server function
+// - Stop server function
         public async Task Stop(Process p)
         {
             await Task.Run(() =>
             {
-                if (p.StartInfo.CreateNoWindow)
-                {
-                    Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
-                    Functions.ServerConsole.SendWaitToMainWindow("^c");
-					
-                }
-                else
-                {
-                    Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
-                    Functions.ServerConsole.SendWaitToMainWindow("^c");
-                }
+                 Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
+                 Functions.ServerConsole.SendWaitToMainWindow("^c");
             });
         }
 
