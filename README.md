@@ -24,6 +24,7 @@ Edit in Edit Config, see the <a href="https://cdn.discordapp.com/attachments/800
 # Important
 For now the server works with a password, you have to put 5 numbers or 5 letters minimum, it is mandatory !!!
 
+*-WindowsGSM.Valheim not compatible with Umod or other mods, for now
 
 # Installation
   1. Download the latest release
